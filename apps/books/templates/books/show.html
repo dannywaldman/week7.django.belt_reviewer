@@ -1,0 +1,68 @@
+{% extends 'books/base.html' %}
+
+{% block title %}
+    Add Book and Review
+{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col">
+            <h3>{{ book.title }}</h3>
+            <p>Author: {{ book.author.name }}</p>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <a href="{% url 'books:books' %}">Home</a>
+                <a href="{% url 'books:logout' %}" class="ml-3">Logout</a>
+            </div>
+        </div>
+    </div>   
+    <div class="row mt-5">
+        <div class="col">
+            <h5 class="font-weight-bold">Reviews:</h5>
+            {% for review in book.reviews.all %}
+                <div class="border-top border-dark">
+                    <a href="{% url 'books:show_book' id=review.book.id %}">{{ review.book.title }}</a>
+                    <div class="ml-4">
+                        <p>Rating:
+                        <script>
+                            for (i = 0; i < {{ review.rating }}; i++){                            
+                                document.write('<span class="fa fa-star"></span>');
+                            }
+                        </script>
+                        </p>
+                        <p><a href="{% url 'books:show_user' id=review.user.id %}">{{ review.user.alias }}</a> says: <span class="font-italic">{{ review.comment }}</span></p>
+                        <p class="font-italic pb">Posted on {{ review.created_at|date:'M d Y' }}</p>
+                        <p class="float-right pb">
+                            {% if review.user.id == request.session.user.id %}
+                                <a href="{% url 'books:delete_review' id=review.id %}">Delete this review</a>
+                            {% endif %}
+                        </p>            
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class=col-2"></div>
+        <div class="col">
+            <form method="POST" action="{% url 'books:add_review' id=book.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="comment" class="font-weight-bold">Add a review:</label>
+                    <textarea rows="10" class="form-control" name="comment" required></textarea>
+                <div>
+                <div class="form-group mt-2 pb">
+                    <label for="rating">Rating:</label>
+                    <select name="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    stars
+                </div>
+                <input type="submit" value="Submit Review" class="btn btn-primary float-right pb mt-2">
+            </form>
+        </div>
+    </div>     
+{% endblock %}

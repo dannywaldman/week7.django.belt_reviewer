@@ -1,0 +1,47 @@
+{% extends 'books/base.html' %}
+
+{% block title %}
+    Books
+{% endblock %}   
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col">
+            <h3>Welcome, {{ user.name }}</h3>
+        </div>
+        <div class="col">
+            <div class="float-right">
+                <a href="{% url 'books:add' %}">Add Book and Review</a>
+                <a href="{% url 'books:logout' %}" class="ml-3">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h5 class="font-weight-bold">Recent Book Reviews:</h5>
+            {% for review in recent %}
+                <a href="{% url 'books:show_book' id=review.book.id %}">{{ review.book.title }}</a>
+                <div class="ml-4">
+                    <p>Rating:
+                    <script>
+                        for (i = 0; i < {{ review.rating }}; i++){                            
+                            document.write('<span class="fa fa-star"></span>');
+                        }
+                    </script>
+                    </p>
+                    <p><a href="{% url 'books:show_user' id=review.user.id %}">{{ review.user.alias }}</a> says: <span class="font-italic">{{ review.comment }}</span></p>
+                    <p class="font-italic">Posted on {{ review.created_at|date:'M d Y' }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class=col-2"></div>
+        <div class="col">
+            <h5 class="font-weight-bold">Other Books with Reviews:</h5>
+            <div class="border border-dark books">
+                {% for book in books %}
+                    <p><a href="{% url 'books:show_book' id=book.id %}">{{ book.title }}</a><p>
+                {% endfor %}            
+            </div>
+        </div>
+    </div>
+{% endblock %} 

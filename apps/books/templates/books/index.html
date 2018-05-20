@@ -1,0 +1,51 @@
+{% extends 'books/base.html' %}
+
+{% block title %}
+    Login or Register
+{%  endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+            {% for message in messages %}
+                <li class="list-group-item {% if message.tags %}{% if message.tags == 'error' %}list-group-item-danger{% else %}list-group-item-success{% endif %}{% endif %}">{{ message }}</li>
+            {% endfor%}
+            </ul>
+         </div>
+    </div>    
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'books:register' %}" method="POST">
+                <fieldset class="border border-dark p-4 mt-5">            
+                    <legend>Register</legend> 
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                        <button type="submit" class="btn btn-success float-right">Register</button>
+                </form>
+            </fieldset>
+        </div>
+        <div class="col">
+            <form method="POST" action="{% url 'books:login' %}">
+                <fieldset class="border border-dark p-4 mt-5">
+                    <legend>Login</legend>
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="text" name="email" class="form-control">
+                        </div>          
+                        <div class="form-group">
+                            <label for="pw">Password:</label>
+                            <input type="password" name="pw" class="form-control">
+                        </div>      
+                        <button type="submit" class="btn btn-success float-right">Login</button>
+                    </fieldset>                        
+            </form>
+        </div>
+    </div>     
+{% endblock %}

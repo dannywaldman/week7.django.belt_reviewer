@@ -1,0 +1,29 @@
+{% extends 'books/base.html' %}
+
+{% block title %}
+    User Reviews
+{% endblock %}   
+
+{% block content %}
+    <div class="row mt-5">
+        <div class="col">
+            <div class="float-right">
+                <a href="{% url 'books:index' %}">Home</a>
+                <a href="{% url 'books:add' %}" class="ml-3">Add Book and Review</a>
+                <a href="{% url 'books:logout' %}" class="ml-3">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h5>User Alias: {{ user.alias }}</h5>
+            <h5>Name: {{ user.name }}</h5>
+            <h5>Email: {{ user.email }}</h5>
+            <h5>Total Reviews: {{ user.reviews.count }}</h5>
+            <h5 class="mt-5">Posted teviews for the following books:</h5>
+            {% for book in books %}
+                <p><a href="{% url 'books:show_book' id=book.0">{{ book.1 }}</a></p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %} 

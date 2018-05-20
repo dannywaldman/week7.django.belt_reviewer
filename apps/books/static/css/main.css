@@ -1,0 +1,14 @@
+legend {
+    width:inherit;
+    padding:0 10px;
+    border-bottom:none;
+}
+
+.books {
+  height:350px;
+  overflow-y: scroll;
+}
+
+.pb {
+    display: inline-block;
+}
